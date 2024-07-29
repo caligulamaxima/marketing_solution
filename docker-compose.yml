@@ -1,4 +1,3 @@
-Set-Content -Path .\docker-compose.yml -Value @"
 version: '3.7'
 
 services:
@@ -7,9 +6,9 @@ services:
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_DB: \${POSTGRES_DB}
-      POSTGRES_USER: \${POSTGRES_USER}
-      POSTGRES_PASSWORD: \${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - marketing_network
     volumes:
@@ -48,9 +47,9 @@ services:
       - '8090:80'
     environment:
       - MAUTIC_DB_HOST=postgres
-      - MAUTIC_DB_NAME=\${POSTGRES_DB}
-      - MAUTIC_DB_USER=\${POSTGRES_USER}
-      - MAUTIC_DB_PASSWORD=\${POSTGRES_PASSWORD}
+      - MAUTIC_DB_NAME=${POSTGRES_DB}
+      - MAUTIC_DB_USER=${POSTGRES_USER}
+      - MAUTIC_DB_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - marketing_network
 
@@ -82,8 +81,8 @@ services:
     container_name: custom_bot
     restart: always
     environment:
-      - OPENAI_API_KEY=\${OPENAI_API_KEY}
-      - TELEGRAM_BOT_TOKEN=\${TELEGRAM_BOT_TOKEN}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
     networks:
       - marketing_network
 
@@ -94,4 +93,3 @@ volumes:
   postgres_data:
   portainer_data:
   grafana_data:
-"@
