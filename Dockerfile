@@ -1,4 +1,3 @@
-Set-Content -Path .\Dockerfile -Value @"
 # Dockerfile
 
 # Base image
@@ -32,4 +31,3 @@ WORKDIR /marketing_solution
 
 # CMD to run Docker Compose
 CMD ['docker-compose', 'up']
-"@
