@@ -1,4 +1,2 @@
-Set-Content -Path .\custom_bot\requirements.txt -Value @"
 openai
 python-telegram-bot
-"@
