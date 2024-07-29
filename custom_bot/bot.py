@@ -1,4 +1,3 @@
-Set-Content -Path .\custom_bot\bot.py -Value @"
 import os
 import openai
 from telegram import Update, ForceReply
@@ -35,4 +34,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-"@
