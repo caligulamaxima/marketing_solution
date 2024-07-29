@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
-      - marketing_network
+      - marketing_solution_network
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -24,7 +24,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
-      - marketing_network
+      - marketing_solution_network
 
   grafana:
     image: grafana/grafana:latest
@@ -35,7 +35,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
-      - marketing_network
+      - marketing_solution_network
     volumes:
       - grafana_data:/var/lib/grafana
 
@@ -51,7 +51,7 @@ services:
       - MAUTIC_DB_USER=${POSTGRES_USER}
       - MAUTIC_DB_PASSWORD=${POSTGRES_PASSWORD}
     networks:
-      - marketing_network
+      - marketing_solution_network
 
   n8n:
     image: n8nio/n8n:latest
@@ -64,7 +64,7 @@ services:
       - N8N_BASIC_AUTH_USER=admin
       - N8N_BASIC_AUTH_PASSWORD=password
     networks:
-      - marketing_network
+      - marketing_solution_network
 
   nextcloud:
     image: nextcloud:latest
@@ -72,24 +72,38 @@ services:
     restart: always
     ports:
       - '8080:80'
+    volumes:
+      - nextcloud_data:/var/www/html
     networks:
-      - marketing_network
+      - marketing_solution_network
 
-  custom_bot:
-    build: ./custom_bot
-    image: custom_bot
-    container_name: custom_bot
+  rasa:
+    image: rasa/rasa:latest-full
+    container_name: rasa
     restart: always
-    environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+    ports:
+      - '5005:5005'
+    volumes:
+      - ./rasa_bot:/app
+    command:
+      - run
+      - --enable-api
     networks:
-      - marketing_network
+      - marketing_solution_network
+
+  scrapy:
+    build: ./scrapy_project
+    image: scrapy_bot
+    container_name: scrapy
+    restart: always
+    networks:
+      - marketing_solution_network
 
 networks:
-  marketing_network:
+  marketing_solution_network:
 
 volumes:
   postgres_data:
   portainer_data:
   grafana_data:
+  nextcloud_data:
